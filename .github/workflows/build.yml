@@ -1,0 +1,22 @@
+name: Build Dylib
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Theos
+        uses: theos/setup-theos-action@v1
+
+      - name: Compile Library
+        run: |
+          make FINALPACKAGE=1
+          
+      - name: Upload Finished Dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyAimbotLib
+          path: .theos/obj/MyAimbotLib.dylib
